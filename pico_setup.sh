@@ -3,12 +3,13 @@
 # Exit on error
 set -e
 
-if grep -q Raspberry /proc/cpuinfo; then
-    echo "Running on a Raspberry Pi"
-else
-    echo "Not running on a Raspberry Pi. Use at your own risk!"
-    SKIP_UART=1
+if [[ $MSYSTEM == "UCRT64" ]]; then
+    echo "Running on MSYS2 UCRT64"
 fi
+
+echo "#### pico install run" >> ~/.bashrc
+
+SKIP_PACMAN=1
 
 # Number of cores when running make
 JNUM=4
@@ -17,24 +18,9 @@ JNUM=4
 OUTDIR="$(pwd)/pico"
 
 # Install dependencies
-GIT_DEPS="git"
-SDK_DEPS="cmake gcc-arm-none-eabi gcc g++ ninja-build"
-OPENOCD_DEPS="gdb-multiarch automake autoconf build-essential texinfo libtool libftdi-dev libusb-1.0-0-dev libjim-dev pkg-config libgpiod-dev"
+
 OPENOCD_TAG="sdk-2.2.0"
-UART_DEPS="minicom"
 
-# Build full list of dependencies
-DEPS="$GIT_DEPS $SDK_DEPS"
-
-if [[ "$SKIP_OPENOCD" == 1 ]]; then
-    echo "Skipping OpenOCD (debug support)"
-else
-    DEPS="$DEPS $OPENOCD_DEPS"
-fi
-
-echo "Installing Dependencies"
-sudo apt update
-sudo apt install -y $DEPS
 
 echo "Creating $OUTDIR"
 # Create pico directory to put everything in
@@ -80,6 +66,7 @@ for REPO in picotool debugprobe
 do
     DEST="$OUTDIR/$REPO"
     REPO_URL="${GITHUB_PREFIX}${REPO}${GITHUB_SUFFIX}"
+    echo "<<<<<<<<<<<< $REPO Compile Start"
     if [[ "$REPO" == "picotool" ]]; then
       git clone -b $SDK_BRANCH $REPO_URL
     else
@@ -89,14 +76,30 @@ do
     # Build both
     cd $DEST
     git submodule update --init
-    cmake -S . -B build -GNinja
-    cmake --build build
-
     if [[ "$REPO" == "picotool" ]]; then
-        echo "Installing picotool"
-        sudo cmake --install build
+	if [[ "$SKIP_PACMAN" == 1 ]]; then
+	    echo "Skipping pacman install checks"
+	else
+	    pacman -S --noconfirm $MINGW_PACKAGE_PREFIX-{toolchain,cmake,libusb}
+        fi
+	PICOTOOL_BIN="$OUTDIR/picotool_bin"
+	mkdir $PICOTOOL_BIN
+	mkdir build
+	cd build
+	cmake .. -DCMAKE_INSTALL_PREFIX=$PICOTOOL_BIN 
+	echo "Installing picotool"
+	cmake --build .
+	#cp picotool.exe ${PICOTOOL_BIN}
+        VARNAME="PICOTOOL_FETCH_FROM_GIT_PATH"
+	echo "Adding $VARNAME to ~/.bashrc"
+        echo "export $VARNAME=$PICOTOOL_BIN" >> ~/.bashrc
+        export ${VARNAME}=$PICOTOOL_BIN
+	source ~/.bashrc
+    elif [[ "$REPO" == "debugprobe" ]]; then
+	cmake -S . -B build -GNinja
+	cmake --build build
     fi
-
+    echo ">>>>>>>>>> $REPO Compile Done"
     cd $OUTDIR
 done
 
@@ -105,7 +108,7 @@ cd pico-examples
 for board in pico pico_w pico2 pico2_w
 do
     build_dir=build_$board
-    cmake -S . -B $build_dir -GNinja -DPICO_BOARD=$board -DCMAKE_BUILD_TYPE=Debug
+    cmake -S . -B $build_dir -GNinja -DPICO_BOARD=$board -DCMAKE_BUILD_TYPE=Debug -DPICOTOOL_dir=${PICOTOOL_dir}
     examples="blink hello_serial hello_usb"
     echo "Building $examples for $board"
     cmake --build $build_dir --target $examples
@@ -124,7 +127,7 @@ else
     # Build OpenOCD
     echo "Building OpenOCD"
     cd $OUTDIR
-    OPENOCD_CONFIGURE_ARGS="--enable-ftdi --enable-sysfsgpio --enable-bcm2835gpio --disable-werror --enable-linuxgpiod"
+    OPENOCD_CONFIGURE_ARGS="--enable-ftdi --enable-sysfsgpio --enable-bcm2835gpio --disable-werror --enable-linuxgpiod --enable-internal-jimtcl"
 
     git clone "${GITHUB_PREFIX}openocd${GITHUB_SUFFIX}" -b ${OPENOCD_TAG} --depth=1
     cd openocd
@@ -134,19 +137,4 @@ else
     sudo make install
 fi
 
-cd $OUTDIR
 
-# Enable UART
-if [[ "$SKIP_UART" == 1 ]]; then
-    echo "Skipping uart configuration"
-else
-    sudo apt install -y $UART_DEPS
-    echo "Disabling Linux serial console (UART) so we can use it for pico"
-
-    # Enable UART hardware
-    sudo raspi-config nonint do_serial_hw 0
-    # Disable console over serial port
-    sudo raspi-config nonint do_serial_cons 1
-
-    echo "You must run sudo reboot to finish UART setup"
-fi
