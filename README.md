@@ -1,5 +1,12 @@
 # THESE INSTRUCTIONS HAVE NOT BEEN VETTED FOR MSYS2!!
 
+# Note on toolchains
+
+The source for varous tool chains is found on:
+
+https://github.com/raspberrypi/pico-vscode/blob/d975f430f3a5daea9e28f2358647ce96fd4eff9b/data/0.18.0/supportedToolchains.ini
+
+
 # Pico-series microcontroller Command Line Setup
 
 This script gives you an easy way to setup your Raspberry Pi to be able to build and run programs on your Pico-series microcontroller from the command line. Compatibility with any systems not running Raspberry Pi OS or Raspberry Pi OS Lite is not guaranteed or maintained.

@@ -8,11 +8,12 @@ if [[ $MSYSTEM == "UCRT64" ]]; then
 fi
 
 echo "#### pico install run" >> ~/.bashrc
-
+SKIP_ARM_TOOLCHAIN=1
+SKIP_RISCV_TOOLCHAIN=1
 SKIP_PACMAN=1
 SKIP_EXAMPLES=1
 SKIP_PICOTOOL=1
-SKIP_DEBUGPROBE=1
+#SKIP_DEBUGPROBE=1
 
 # Number of cores when running make
 JNUM=4
@@ -28,6 +29,71 @@ OPENOCD_TAG="sdk-2.2.0"
 echo "Creating $OUTDIR"
 # Create pico directory to put everything in
 mkdir -p $OUTDIR
+
+cd $OUTDIR
+
+TOOLCHAINS="${OUTDIR}/toolchains"
+mkdir -p "$TOOLCHAINS"
+
+if [[ "${SKIP_ARM_TOOLCHAIN}" == 1 ]]; then
+    echo "Skpping arm toolchain"
+else
+    cd "$TOOLCHAINS"
+    CHAIN="arm-chain"
+    mkdir "$CHAIN"
+    cd $CHAIN
+    mkdir "tmp"
+    cd "tmp"
+    ARMURL="https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi.zip"
+ 
+    curl  -L "${ARMURL}" > ./chain.zip
+    unzip -qq -d "../" "./chain.zip"
+    cd ..
+    rm -rf "tmp"
+
+
+    PICO_ARM_TOOLCHAIN_PATH="${TOOLCHAINS}/${CHAIN}"
+    VARNAME="PICO_ARM_TOOLCHAIN_PATH"
+    echo "Adding $VARNAME to ~/.bashrc"
+    echo "export $VARNAME=$PICO_ARM_TOOLCHAIN_PATH" >> ~/.bashrc
+    export ${VARNAME}=$PICO_ARM_TOOLCHAIN_PATH
+
+    PICO_TOOLCHAIN_PATH="${TOOLCHAINS}/${CHAIN}"
+    VARNAME="PICO_TOOLCHAIN_PATH"
+    echo "Adding $VARNAME to ~/.bashrc"
+    echo "export $VARNAME=$PICO_TOOLCHAIN_PATH" >> ~/.bashrc
+    export ${VARNAME}=$PICO_TOOLCHAIN_PATH
+fi
+
+#### RISV
+if [[ "${SKIP_RISCV_TOOLCHAIN}" == 1 ]]; then
+       echo "Skipping riscv toolchain"
+    else
+	cd $OUTDIR
+	cd $TOOLCHAINS
+
+
+	CHAIN="risv-chain"
+	mkdir "$CHAIN"
+	cd $CHAIN
+	mkdir "tmp"
+	cd "tmp"
+
+        RISCVURL="https://github.com/raspberrypi/pico-sdk-tools/releases/download/v2.2.0-3/riscv-toolchain-15-x64-win.zip"
+	curl  -L "${RISCVURL}" > ./chain.zip
+	unzip -qq -d "../" "./chain.zip"
+	cd ..
+	rm -rf "tmp"
+	# Define PICO_RISCV_TOOLCHAIN_PATH in ~/.bashrc
+	PICO_RISCV_TOOLCHAIN_PATH="${TOOLCHAINS}/${CHAIN}"
+        VARNAME="PICO_RISCV_TOOLCHAIN_PATH"
+        echo "Adding $VARNAME to ~/.bashrc"
+        echo "export $VARNAME=$PICO_RISCV_TOOLCHAIN_PATH" >> ~/.bashrc
+        export ${VARNAME}=$PICO_RISCV_TOOLCHAIN_PATH
+fi
+
+
+
 cd $OUTDIR
 
 # Clone sw repos
@@ -127,7 +193,13 @@ else
   
     cmake -S . -B build -GNinja
     cmake --build build
- 
+
+	PIOASM_BINARY="${DEST}/build/pioasm/pioasm.exe"
+        VARNAME="PIOASM_BINARY"
+        echo "Adding $VARNAME to ~/.bashrc"
+        echo "export $VARNAME=$PIOASM_BINARY" >> ~/.bashrc
+        export ${VARNAME}=$PIOASM_BINARY
+    
     echo ">>>>>>>>>> $REPO Compile Done"
     cd $OUTDIR
 fi
