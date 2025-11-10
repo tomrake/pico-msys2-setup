@@ -1,0 +1,22 @@
+#+TITLE: Kit Interface
+
+The pico-sdk distributions have internal glue points based on enviroment variables.
+The pico-sdk is distributed as
+* sdk source code
+
+| Enviroment Variable  | Name            | Description            | Type        | Authority        |
+|----------------------+-----------------+------------------------+-------------+------------------|
+| PICO_SDK_PATH        | pico_sdk        | The core pico libaries | source code | Raspberry Pi Ltd |
+| PICO_EXAMPLES_PATH   | pico_examples   | working example code   | source code | Raspberry Pi Ltd |
+| PICO_EXTRAS_PATH     | pico_extras     | beta code              | source code | Raspberry Pi Ltd |
+| PICO_PLAYGROUND_PATH | pico_playground | alpha code             | source code | Raspberry Pi Ltd |
+|                      |                 |                        |             |                  |
+|                      |                 |                        |             |                                        |                 |                        |             |                  |
+* distributed binaries
+| Enviroment Variable          | name | Description                             | Authority        |
+|------------------------------+------+-----------------------------------------+------------------|
+| PICOTOOL_FETCH_FROM_GIT_PATH |      | Fixed location of the pictool git clone | Raspberry Pi Ltd |
+| PICOTOOL_BINARY              |      | The location of picotool binary         | this author      |
+| OPENOCD_BINARY               |      | The location of the openocd binary      |                  |
+| PICO_TOOLCHAIN_PATH          |      | The location of the ARM toolchain       |                  |
+| PICO_RISCV_TOOLCHAIN_PATH    |      | The location of the RISV toolchain      |                  |
