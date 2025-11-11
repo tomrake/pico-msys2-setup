@@ -8,11 +8,11 @@ if [[ $MSYSTEM == "UCRT64" ]]; then
 fi
 
 echo "#### pico install run" >> ~/.bashrc
-SKIP_ARM_TOOLCHAIN=1
-SKIP_RISCV_TOOLCHAIN=1
+#SKIP_ARM_TOOLCHAIN=1
+#SKIP_RISCV_TOOLCHAIN=1
 SKIP_PACMAN=1
-SKIP_EXAMPLES=1
-SKIP_PICOTOOL=1
+#SKIP_EXAMPLES=1
+#SKIP_PICOTOOL=1
 #SKIP_DEBUGPROBE=1
 
 # Number of cores when running make
