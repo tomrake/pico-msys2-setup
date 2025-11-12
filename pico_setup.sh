@@ -8,12 +8,13 @@ if [[ $MSYSTEM == "UCRT64" ]]; then
 fi
 
 echo "#### pico install run" >> ~/.bashrc
-#SKIP_ARM_TOOLCHAIN=1
-#SKIP_RISCV_TOOLCHAIN=1
+SKIP_ARM_TOOLCHAIN=1
+SKIP_RISCV_TOOLCHAIN=1
 SKIP_PACMAN=1
-#SKIP_EXAMPLES=1
-#SKIP_PICOTOOL=1
-#SKIP_DEBUGPROBE=1
+SKIP_EXAMPLES=1
+SKIP_PICOTOOL=1
+SKIP_DEBUGPROBE=1
+#SKIP_OPENOCD=1
 
 # Number of cores when running make
 JNUM=4
@@ -233,11 +234,13 @@ else
     echo "Building OpenOCD"
     cd $OUTDIR
     OPENOCD_CONFIGURE_ARGS="--enable-ftdi  --disable-werror --enable-internal-jimtcl"
-
+    mkdir -p "openocd/tmp"
+    cd "openocd/tmp"
+    
     git clone "${GITHUB_PREFIX}openocd${GITHUB_SUFFIX}" -b ${OPENOCD_TAG} --depth=1
     cd openocd
     mkdir openocd
-    OPENOCD_INSTALL_DIR="$OUTDIR/openocd/openocd"
+    OPENOCD_INSTALL_DIR="$OUTDIR/openocd/"
     git submodule update --init
     ./bootstrap
     ./configure --prefix="${OPENOCD_INSTALL_DIR}" $OPENOCD_CONFIGURE_ARGS
