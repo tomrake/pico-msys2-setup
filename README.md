@@ -16,21 +16,21 @@ This script has been adapted to add downloading or toolchains used to cross-comp
 
 | Enviroment Variable          | Description                             |
 | SDK Sources:                 |                                         |
-|------------------------------+-----------------------------------------|
+|------------------------------|-----------------------------------------|
 | PICO_SDK_PATH                | pico_sdk        The core pico libaries  |
 | PICO_EXAMPLES_PATH           | pico_examples   working example code    |
 | PICO_EXTRAS_PATH             | pico_extras     beta code               |
 | PICO_PLAYGROUND_PATH         | pico_playground alpha code              |
 | PICOTOOL_FETCH_FROM_GIT_PATH | Fixed location of the pictool git clone |
-|------------------------------+-----------------------------------------|
+|------------------------------|-----------------------------------------|
 | Toolchain locations:         |                                         |
-|------------------------------+-----------------------------------------|
+|------------------------------|-----------------------------------------|
 | PICO_TOOLCHAIN_PATH          | The location of the ARM toolchain       |
 | PICO_RISCV_TOOLCHAIN_PATH    | The location of the RISV toolchain      |
 | PICO_ARM_TOOLCHAIN_PATH      | The location of a toolchain             |
-|------------------------------+-----------------------------------------|
+|------------------------------|-----------------------------------------|
 | Compiled binaries:           |                                         |
-|------------------------------+-----------------------------------------|
+|------------------------------|-----------------------------------------|
 | PICOTOOL_BINARY              | The location of picotool binary         |
 | OPENOCD_BINARY               | The location of the openocd binary      |
 | PIOASM_BINARY                | The location of the pioasm              |
