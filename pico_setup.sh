@@ -12,8 +12,8 @@ SKIP_ARM_TOOLCHAIN=1
 SKIP_RISCV_TOOLCHAIN=1
 SKIP_PACMAN=1
 SKIP_EXAMPLES=1
-SKIP_PICOTOOL=1
-SKIP_DEBUGPROBE=1
+#SKIP_PICOTOOL=1
+#SKIP_DEBUGPROBE=1
 #SKIP_OPENOCD=1
 
 # Number of cores when running make
@@ -135,21 +135,23 @@ source ~/.bashrc
 if [[ "$SKIP_PICOTOOL" == 1 ]]; then
     echo "Skipping picotool"
 else
-    REPO="picotool"
-    DEST="$OUTDIR/$REPO"
-    REPO_URL="${GITHUB_PREFIX}${REPO}${GITHUB_SUFFIX}"
-    echo "<<<<<<<<<<<< $REPO Compile Start"
-    git clone -b $SDK_BRANCH $REPO_URL
-    cd $DEST
-    git submodule update --init
 
-    if [[  -n ${PICOTOOL_BINARY} && -x ${PICOTOOL_BINARY} ]]; then
+
+    if [[  -n "${PICOTOOL_BINARY}" && -x "${PICOTOOL_BINARY}" ]]; then
 	echo "picotool found at ${PICOTOOL_BINARY} Not building again"
     else
 	echo "Building picotool"
-	PICOTOOL_GIT_ARTIFACT="$OUTDIR/picotool_bin"
-	PICOTOOL_BINARY="$PICOTOOL_GIT_ARTIFACT/picotool/picotool.exe"
-	mkdir $PICOTOOL_GIT_ARTIFACT
+	REPO="picotool"
+	DEST="${OUTDIR}/${REPO}"
+	REPO_URL="${GITHUB_PREFIX}${REPO}${GITHUB_SUFFIX}"
+	PICOTOOL_GIT_ARTIFACT="$DEST"	
+	echo "<<<<<<<<<<<< $REPO Compile Start"
+	cd "${OUTDIR}"
+	git clone -b $SDK_BRANCH $REPO_URL
+	cd "${REPO}"
+	git submodule update --init
+
+	PICOTOOL_BINARY="$DEST/build/picotool.exe"
 	
 	if [[ "$SKIP_PACMAN" == 1 ]]; then
 	    echo "Skipping pacman install checks"
@@ -159,15 +161,15 @@ else
 
 	mkdir build
 	cd build
-	cmake .. -DCMAKE_INSTALL_PREFIX=$PICOTOOL_GIT_ARTIFACT 
+	cmake .. -DCMAKE_INSTALL_PREFIX="$DEST/picotool" 
 	echo "Installing picotool"
 	cmake --build .
 	#cp picotool.exe ${PICOTOOL_GIT_ARTIFACT}
 	# picoprobe and other depend on this directory existing.
         VARNAME="PICOTOOL_FETCH_FROM_GIT_PATH"
 	echo "Adding $VARNAME to ~/.bashrc"
-        echo "export $VARNAME=$PICOTOOL_GIT_ARTIFACT" >> ~/.bashrc
-        export ${VARNAME}=$PICOTOOL_GIT_ARTIFACT
+        echo "export $VARNAME=$DEST" >> ~/.bashrc
+        export ${VARNAME}=$DEST
         # This is actual product we depend on.
         VARNAME="PICOTOOL_BINARY"
 	echo "Adding $VARNAME to ~/.bashrc"

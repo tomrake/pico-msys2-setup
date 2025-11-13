@@ -1,10 +1,25 @@
-# THESE INSTRUCTIONS HAVE NOT BEEN VETTED FOR MSYS2!!
+# A raspberrypi/pico-setup fork
+
+This script has been forked from https://github.com/raspberrypi/pico-setup.
+This script has been adapted to run under the msys2 development enviroment on Windows.
+This script has been adapted to add downloading or toolchains used to cross-compile to pico,pico2 hardware.
+
+## The enviroment interface
+
+The pico-sdk from raspberrypi had an interface through various enviroment variables. During the execution of the original pico-setup various enviroment variables are set in ~/.bashrc. The most significant of which is PICO_SDK_PATH, along with PICO_EXAMPLES_PATH, PICO_EXTRAS_PATH and PICO_PLAYGROUND_PATH.
+
+For msys2 setup of pico the following enviroment variable are set,PICO_ARM_TOOLCHAIN_PATH,PICO_TOOLCHAIN_PATH, PICO_RISCV_TOOLCHAIN_PATH
+
 
 # Note on toolchains
 
 The source for varous tool chains is found on:
 
 https://github.com/raspberrypi/pico-vscode/blob/d975f430f3a5daea9e28f2358647ce96fd4eff9b/data/0.18.0/supportedToolchains.ini
+
+
+
+# THESE INSTRUCTIONS HAVE NOT BEEN VETTED FOR MSYS2!!
 
 
 # Pico-series microcontroller Command Line Setup
