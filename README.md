@@ -1,51 +1,69 @@
 # A raspberrypi/pico-setup fork
 
 ## Start with a Raspberry Pi flavored target
-This bash script has been forked from https://github.com/raspberrypi/pico-setup which was debugged against raspberrypi distribution of linux.
+This bash script has been forked from https://github.com/raspberrypi/pico-setup and the READMEof that repo states:
 
-This target avoid the subject of downloading of the cross-compilers.
-The issue of cross-compilers is delt with in the pico-vscode repo.
+
+> Compatibility with any systems not running Raspberry Pi OS or Raspberry Pi OS Lite is not guaranteed or maintained.
+
+
+## Modify to create compatibilty with MSYS2 on Windows
 
 When run the pico-setup.sh creates a pico directory in the current directory and places all it's downloads into that folder. A series of environment variables are set directly and via ~/.bashrc.
 
-## Fork for a msys2 windows target
-This script has been adapted to run under the msys2 development enviroment on Windows.
-This script has been adapted to add downloading or toolchains used to cross-compile to pico,pico2 hardware.
+1) Download the pico-sdk sources from github
+
+2) Compile the tools under MSYS2
+
+3) Download the correct cross-compilers.
+
+4) Add enviroment variable to point to all the necesary pieces.
+
+## Include cross-compiler toolchains
+
+The documentation  "Getting Started With Pico" points to an ARM toolchain at the ARM site.
+RaspberryPi Ltd recomends the VSCode plug-in to develop pico code, the list of crosscompiler toolchains is inside the source code for VSCode plug-in.
+It is the choice of me, the software author, that the toolchains are to in the subdirectory of the installation folder.
+
+
 
 ## The enviroment interface
 
+Enviroment variable are integral with connecting the various pico sources from the sdk, examples, extras aand playground. They are extened to  point to the various toolchains.
+
+### SDK Source locations
+
 | Enviroment Variable          | Description                             |
 |------------------------------|-----------------------------------------|
-| SDK Sources:                 |                                         |
 | PICO_SDK_PATH                | pico_sdk        The core pico libaries  |
 | PICO_EXAMPLES_PATH           | pico_examples   working example code    |
 | PICO_EXTRAS_PATH             | pico_extras     beta code               |
 | PICO_PLAYGROUND_PATH         | pico_playground alpha code              |
 | PICOTOOL_FETCH_FROM_GIT_PATH | Fixed location of the pictool git clone |
-|------------------------------|-----------------------------------------|
+
+
+### Toolchain locations
 
 | Enviroment Variable          | Description                             |
 |------------------------------|-----------------------------------------|
-| Toolchain locations:         |                                         |
 | PICO_TOOLCHAIN_PATH          | The location of the ARM toolchain       |
 | PICO_RISCV_TOOLCHAIN_PATH    | The location of the RISV toolchain      |
 | PICO_ARM_TOOLCHAIN_PATH      | The location of a toolchain             |
 
+### Compiled binaries:  
 
 | Enviroment Variable          | Description                             |
 |------------------------------|-----------------------------------------|
-| Compiled binaries:           |                                         |
 | PICOTOOL_BINARY              | The location of picotool binary         |
 | OPENOCD_BINARY               | The location of the openocd binary      |
 | PIOASM_BINARY                | The location of the pioasm              |
 |                              |                                         |
 
 
-
-
 ## Notes on toolchains
 
-The source for varous tool chains is found on:
+The sources for various tool chains is found needed to cross compile code for pico both ARM and RISCV.
+The 
 
 https://github.com/raspberrypi/pico-vscode/blob/d975f430f3a5daea9e28f2358647ce96fd4eff9b/data/0.18.0/supportedToolchains.ini
 
@@ -60,7 +78,7 @@ This script gives you an easy way to setup your Raspberry Pi to be able to build
 
 To download & run this script, you can use the following commands:
 ```bash
-wget https://raw.githubusercontent.com/raspberrypi/pico-setup/master/pico_setup.sh
+wget https://raw.githubusercontent.com/raspberrypi/pico-msys2-setup/master/pico_setup.sh
 chmod +x pico_setup.sh
 ./pico_setup.sh
 ```
