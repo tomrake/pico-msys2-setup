@@ -1,15 +1,21 @@
 # A raspberrypi/pico-setup fork
 
-## Start with a Raspberry Pi flavored target
+## Based on a Raspberry Pi flavored setup
 This bash script has been forked from https://github.com/raspberrypi/pico-setup and the READMEof that repo states:
 
 
 > Compatibility with any systems not running Raspberry Pi OS or Raspberry Pi OS Lite is not guaranteed or maintained.
 
 
-## Modify to create compatibilty with MSYS2 on Windows
+## The Goal
 
-When run the pico-setup.sh creates a pico directory in the current directory and places all it's downloads into that folder. A series of environment variables are set directly and via ~/.bashrc.
+
+
+## Create a MSYS2 setup on Windows
+
+When run pico-setup.sh creates a pico directory in the current directory and puts all it's components into that folder. A series of environment variables are directly set and are added to ~/.bashrc.
+
+In the pico-msys2-setup all the following should be accomplished.
 
 1) Download the pico-sdk sources from github
 
@@ -19,19 +25,26 @@ When run the pico-setup.sh creates a pico directory in the current directory and
 
 4) Add enviroment variable to point to all the necesary pieces.
 
-## Include cross-compiler toolchains
+## Include the cross-compiler toolchains
 
-The documentation  "Getting Started With Pico" points to an ARM toolchain at the ARM site.
-RaspberryPi Ltd recomends the VSCode plug-in to develop pico code, the list of crosscompiler toolchains is inside the source code for VSCode plug-in.
-It is the choice of me, the software author, that the toolchains are to in the subdirectory of the installation folder.
+The documentation  "Getting Started With Pico" points to an ARM toolchain at the ARM's site.
+The list of crosscompiler toolchains is located in the source code for VSCode plug-in.
+It is the choice of this  software author, that the toolchains are to in the subdirectory of the installation folder.
 
+## The concept of the full kit
 
+The distribution of code for the pico is a software develoment kit.
+The full kit consists of crosscompiler toolchains, the standard pico libraries (pico_sdk) various examples, extras and playground code. Certain compiled tools and a specfication of what additional tools are need to build the tools, examples and other code.
 
-## The enviroment interface
+### Windows devices and msys2 packages
+
+The full kit will require certain software related to the operation system that hosts the kit. For the msys2 version of the pico kit much of the pacman packages and the Windows level device hacking of USB and serial devices gets beyond the scope this discussion.
+
+### The enviroment interface
 
 Enviroment variable are integral with connecting the various pico sources from the sdk, examples, extras aand playground. They are extened to  point to the various toolchains.
 
-### SDK Source locations
+#### SDK Source locations
 
 | Enviroment Variable          | Description                             |
 |------------------------------|-----------------------------------------|
@@ -42,7 +55,7 @@ Enviroment variable are integral with connecting the various pico sources from t
 | PICOTOOL_FETCH_FROM_GIT_PATH | Fixed location of the pictool git clone |
 
 
-### Toolchain locations
+#### Toolchain locations
 
 | Enviroment Variable          | Description                             |
 |------------------------------|-----------------------------------------|
@@ -50,7 +63,7 @@ Enviroment variable are integral with connecting the various pico sources from t
 | PICO_RISCV_TOOLCHAIN_PATH    | The location of the RISV toolchain      |
 | PICO_ARM_TOOLCHAIN_PATH      | The location of a toolchain             |
 
-### Compiled binaries:  
+#### Compiled binaries:  
 
 | Enviroment Variable          | Description                             |
 |------------------------------|-----------------------------------------|
@@ -74,12 +87,11 @@ https://github.com/raspberrypi/pico-vscode/blob/d975f430f3a5daea9e28f2358647ce96
 
 # Pico-series microcontroller Command Line Setup
 
-This script gives you an easy way to setup your Raspberry Pi to be able to build and run programs on your Pico-series microcontroller from the command line. Compatibility with any systems not running Raspberry Pi OS or Raspberry Pi OS Lite is not guaranteed or maintained.
+This script gives you an easy way to setup your Raspberry Pi to be able to build and run programs on your Pico-series microcontroller from the command line using MSYS2 tools on Windows.
 
 To download & run this script, you can use the following commands:
 ```bash
-wget https://raw.githubusercontent.com/raspberrypi/pico-msys2-setup/master/pico_setup.sh
-chmod +x pico_setup.sh
+wget https://raw.githubusercontent.com/tomrake/pico-msys2-setup/master/pico_setup.sh
 ./pico_setup.sh
 ```
 
