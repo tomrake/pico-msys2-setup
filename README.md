@@ -129,6 +129,18 @@ You should now have a blinking LED on your board! For more info on the `picotool
 
 ## Console Input/Output
 
+### Debugging UART connections on Windows
+
+#### A works on my computer warning.
+
+I think this was a half a day hacking session, I may have notes to add details but you hardware may vary.
+The RaspberryPi debug probe is a cmsis-dap protocol which converts the uart and SWD port data into serial data over USB.
+I need to add and configure various drivers to get serial communications to work between my computer, the debugprobe and my pico2_w board.
+
+
+
+### Modify this section to document the msys2 package tio
+
 To view console output, you can either connect the UART output to a [Debug Probe](https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html#getting-started) (or similar) and use `stdio_uart` (see the [hello_serial example](https://github.com/raspberrypi/pico-examples/blob/master/hello_world/serial)), or you can use `stdio_usb` (see the [hello_usb example](https://github.com/raspberrypi/pico-examples/blob/master/hello_world/usb)).
 
 First, build & run the example for your `stdio` choice on your Pico-series microcontroller with the same commands as before:
@@ -137,13 +149,29 @@ cmake --build build_pico --target hello_serial
 picotool load build_pico/hello_world/serial/hello_serial.uf2 -vx
 ```
 
-Then attach `minicom` to view the output:
+Im my case I used a debugprobe and the msys2 package tio to connect to the serial devices.
+
+Then attach `tio` to view the output:
+
+The command:
 ```bash
-minicom -b 115200 -D /dev/ttyACM0
+tio -l
 ```
+Will list the available serial devices.
+
+Then attach `tio`` to view the output of hello_serial
+```bash
+tio -b 115200 /dev/ttyS3
+```
+
+Then attach `tio`` to view the output of hello_usb
+```bash
+tio -b 115200 /dev/ttyS2
+```
+
 The port number may be different, so also try `/dev/ttyACM1` etc - and on other OSes may be entirely different (eg `/dev/tty.usbmodem0001` on MacOS)
 
-To exit minicom, type Ctrl+A then X
+To exit tio, type Ctrl+T then Q
 
 ## Debugging with OpenOCD and GDB
 
