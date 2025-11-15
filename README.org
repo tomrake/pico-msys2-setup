@@ -355,10 +355,10 @@ Alt+F1,F2,F3,F4 etc.
 
 Alternatively you can use something like =screen= or =tmux= to allow you
 to open new terminals and detach from them - for example using =screen=:
-* =screen -S minicom= - open a new terminal called =minicom= * Ctrl+A
-then D - detach from the current terminal * =screen -r minicom= -
-re-attach to an existing terminal called =minicom= * =screen -ls= - list
-existing terminals
+- =screen -S minicom= - open a new terminal called =minicom=
+- Ctrl+A then D - detach from the current terminal
+- =screen -r minicom= - re-attach to an existing terminal called =minicom=
+- =screen -ls= - list existing terminals
 
 For more details on =screen=, see the
 [[https://www.gnu.org/software/screen/manual/screen.html][screen docs]]
