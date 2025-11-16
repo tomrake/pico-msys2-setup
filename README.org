@@ -2,13 +2,13 @@
 :PROPERTIES:
 :CUSTOM_ID: a-raspberrypipico-setup-fork
 :END:
-** Based on a Raspberry Pi flavored setup
+** Based on a Raspberry Pi-flavored setup
 :PROPERTIES:
 :CUSTOM_ID: based-on-a-raspberry-pi-flavored-setup
 :END:
 This bash script has been forked from
-https://github.com/raspberrypi/pico-setup and the READMEof that repo
-states:
+https://github.com/raspberrypi/pico-setup along with the associated README.
+That README states:
 
 #+begin_quote
 Compatibility with any systems not running Raspberry Pi OS or Raspberry
@@ -20,60 +20,68 @@ Pi OS Lite is not guaranteed or maintained.
 :PROPERTIES:
 :CUSTOM_ID: the-goal
 :END:
-** Create a MSYS2 setup on Windows
+*** Dedication
+Github users: [[https://github.com/lurch][lurch]], [[https://github.com/will-v-pi][will-v-pi]], [[https://github.com/P33M][P33M]], [[https://github.com/liamfraser][liamfraser]], [[https://github.com/fuzzybear3][fuzzybear3]], [[https://github.com/hasenradball][hasenradball]].
+And the UK Raspberry Pi team.
+
+*** About updating this project
+- This project was created after the 2.2.0 release of the pico-sdk.
+- I am uncertain if I will update this for the next release.
+
+*** If you  are a beginner, start with VSCode and the plug-in
+- Beginners should use VSCode and the VSCode pico plug-in.
+- Be sure you are comfortable with Appendix C of "Getting started with Raspberry Pi Pico-series."
+- MSYS2 is NOT the recommended way to develop code by Raspberry Pi.
+
+** Create a Windows MSYS2 development systam  for pico code development.
 :PROPERTIES:
 :CUSTOM_ID: create-a-msys2-setup-on-windows
 :END:
-When run pico-setup.sh creates a pico directory in the current directory
-and puts all it's components into that folder. A series of environment
-variables are directly set and are added to ~/.bashrc.
+This project is an extension/fork of the [[https://github.com/raspberrypi/pico-setup]] project.
+I modified this on a Windows 11 computer using MSYS2 with the UCRT64 Environment.
 
-In the pico-msys2-setup all the following should be accomplished.
+When executed pico-setup.sh, first the =pico= directory is created in the current directory.
+Next the =pico= source repos are downloading in the =pico= directory.
+The toolchains are downloaded in the =pico= directory.
+The source for the picotool, the debugprobe and openocd are downloaded and compiled in the =pico= directory.
+Environment variables are directly set, and added to =~/.bashrc=.
 
-1) Download the pico-sdk sources from github
 
-2) Compile the tools under MSYS2
-
-3) Download the correct cross-compilers.
-
-4) Add enviroment variable to point to all the necesary pieces.
-
-** Include the cross-compiler toolchains
+** The cross-compiler toolchains
 :PROPERTIES:
 :CUSTOM_ID: include-the-cross-compiler-toolchains
 :END:
 The documentation "Getting Started With Pico" points to an ARM toolchain
-at the ARM's site. The list of crosscompiler toolchains is located in
-the source code for VSCode plug-in. It is the choice of this software
-author, that the toolchains are to in the subdirectory of the
-installation folder.
+on the ARM website. The list of crosscompiler toolchain urls are located in
+the source code for the VSCode plug-in. It is the choice of this software
+author that the toolchains are to be include the subdirectory of the
+pico folder.
 
 ** The concept of the full kit
 :PROPERTIES:
 :CUSTOM_ID: the-concept-of-the-full-kit
 :END:
-The distribution of code for the pico is a software develoment kit. The
+The distribution of code for the pico is a software development kit. The
 full kit consists of crosscompiler toolchains, the standard pico
-libraries (pico_sdk) various examples, extras and playground code.
+libraries the =sdk=,  =examples=, =extras= and =playground= code.
 Certain compiled tools and a specfication of what additional tools are
-need to build the tools, examples and other code.
+necessary to build the tools, examples and other code.
 
 *** Windows devices and msys2 packages
 :PROPERTIES:
 :CUSTOM_ID: windows-devices-and-msys2-packages
 :END:
-The full kit will require certain software related to the operation
+The full kit will require certain software related to the operating
 system that hosts the kit. For the msys2 version of the pico kit much of
 the pacman packages and the Windows level device hacking of USB and
-serial devices gets beyond the scope this discussion.
+serial devices are beyond the scope this discussion.
 
-*** The enviroment interface
+*** The environment interface
 :PROPERTIES:
 :CUSTOM_ID: the-enviroment-interface
 :END:
-Enviroment variable are integral with connecting the various pico
-sources from the sdk, examples, extras aand playground. They are extened
-to point to the various toolchains.
+Enviroment variables are integral to connecting the various =pico=
+sources from the =sdk=, =examples=, =extras= and =playground=. Added environment variables index the toolchains and various compiled tools.
 
 **** SDK Source locations
 :PROPERTIES:
@@ -112,15 +120,10 @@ to point to the various toolchains.
 :PROPERTIES:
 :CUSTOM_ID: notes-on-toolchains
 :END:
-The sources for various tool chains is found needed to cross compile
-code for pico both ARM and RISCV. The
+The necessary ARM and RISCV toolchains required to crosscompile source code are defined in the VSCode pico extenstion RaspberryPi.
 
 https://github.com/raspberrypi/pico-vscode/blob/d975f430f3a5daea9e28f2358647ce96fd4eff9b/data/0.18.0/supportedToolchains.ini
 
-* THESE INSTRUCTIONS HAVE NOT BEEN VETTED FOR MSYS2!!
-:PROPERTIES:
-:CUSTOM_ID: these-instructions-have-not-been-vetted-for-msys2
-:END:
 * Pico-series microcontroller Command Line Setup
 :PROPERTIES:
 :CUSTOM_ID: pico-series-microcontroller-command-line-setup
@@ -136,16 +139,7 @@ wget https://raw.githubusercontent.com/tomrake/pico-msys2-setup/master/pico_setu
 ./pico_setup.sh
 #+end_src
 
-For manual command line setup instructions for other operating systems,
-see [[#basic-setup-on-other-operating-systems][Basic Setup on Other
-Operating Systems]]
 
-If you want to use a GUI instead of the command line, then see the
-[[https://github.com/raspberrypi/pico-vscode][pico-vscode]] extension
-instead of this script - this supports 64-bit Windows, MacOS, Raspberry
-Pi OS, and most common Linux distros. This is documented in the
-[[https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf][Getting
-Started Guide]].
 
 ** Compiling and running an example
 :PROPERTIES:
@@ -163,8 +157,8 @@ with the relevant build directory (eg =build_pico2=) in the following
 commands.
 
 #+begin_quote
-If you're not using one of the default boards (pico, pico_w, pico2, or
-pico2_w), you'll need to create a new build directory for your board -
+If you're not using one of the default boards (=pico=, =pico_w=, =pico2=, or
+=pico2_w=), you'll need to create a new build directory for your board -
 you can do this with this command (replace both instances of =$board=
 with the board you are using):
 
@@ -196,8 +190,7 @@ correctly and reboots the board to execute it
 
 You should now have a blinking LED on your board! For more info on the
 =picotool= command which is used to load and query binaries on the
-device, see its
-[[https://github.com/raspberrypi/picotool?tab=readme-ov-file#readme][README]]
+device, see its [[https://github.com/raspberrypi/picotool?tab=readme-ov-file#readme][README]]
 
 ** Console Input/Output
 :PROPERTIES:
@@ -211,7 +204,7 @@ device, see its
 :PROPERTIES:
 :CUSTOM_ID: a-works-on-my-computer-warning.
 :END:
-I think this was a half a day hacking session, I may have notes to add
+For me this was a half-a-day-hacking-session, I may have notes to add
 details but you hardware may vary. The RaspberryPi debug probe is a
 cmsis-dap protocol which converts the uart and SWD port data into serial
 data over USB. I need to add and configure various drivers to get serial
@@ -223,12 +216,8 @@ pico2_w board.
 :CUSTOM_ID: modify-this-section-to-document-the-msys2-package-tio
 :END:
 To view console output, you can either connect the UART output to a
-[[https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html#getting-started][Debug
-Probe]] (or similar) and use =stdio_uart= (see the
-[[https://github.com/raspberrypi/pico-examples/blob/master/hello_world/serial][hello_serial
-example]]), or you can use =stdio_usb= (see the
-[[https://github.com/raspberrypi/pico-examples/blob/master/hello_world/usb][hello_usb
-example]]).
+[[https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html#getting-started][Debug Probe]] (or similar) and use =stdio_uart= (see the [[https://github.com/raspberrypi/pico-examples/blob/master/hello_world/serial][hello_serial example]]),
+or you can use =stdio_usb= (see the [[https://github.com/raspberrypi/pico-examples/blob/master/hello_world/usb][hello_usb example]]).
 
 First, build & run the example for your =stdio= choice on your
 Pico-series microcontroller with the same commands as before:
@@ -238,7 +227,7 @@ cmake --build build_pico --target hello_serial
 picotool load build_pico/hello_world/serial/hello_serial.uf2 -vx
 #+end_src
 
-Im my case I used a debugprobe and the msys2 package tio to connect to
+I used a debugprobe and the msys2 package tio to connect to
 the serial devices.
 
 Then attach =tio= to view the output:
@@ -251,13 +240,13 @@ tio -l
 
 Will list the available serial devices.
 
-Then attach `tio`` to view the output of hello_serial
+Then attach =tio= to view the output of hello_serial
 
 #+begin_src sh
 tio -b 115200 /dev/ttyS3
 #+end_src
 
-Then attach `tio`` to view the output of hello_usb
+Then attach =tio= to view the output of hello_usb
 
 #+begin_src sh
 tio -b 115200 /dev/ttyS2
@@ -274,9 +263,7 @@ To exit tio, type Ctrl+T then Q
 :CUSTOM_ID: debugging-with-openocd-and-gdb
 :END:
 To debug programs on the Pico-series microcontroller, you first need to
-attach a debugger such as the
-[[https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html#getting-started][Debug
-Probe]]. Once that's done, you can attach OpenOCD to your Pico-series
+attach a debugger such as the [[https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html#getting-started][Debug Probe]]. Once that's done, you can attach OpenOCD to your Pico-series
 microcontroller with this command (replace =rp2040.cfg= with
 =rp2350.cfg=, if using an RP2350-based board like a Pico 2):
 
@@ -288,7 +275,7 @@ In a separate window, you can run GDB and connect to that OpenOCD
 server:
 
 #+begin_src sh
-gdb -ex "target extended-remote localhost:3333"
+gdb-multiarch -ex "target extended-remote localhost:3333"
 #+end_src
 
 Then in GDB, run the following:
@@ -346,13 +333,14 @@ For more details on debugging with GDB, see the [[https://sourceware.org/gdb/cur
 :END:
 When debugging or viewing serial output, you might want multiple
 programs open in different terminals, as they all need to run at the
-same time.
+same time. Under MSYS2 you can run separate MSYS2 instances.
+You can use tmux and create a session with the various tmux windows running multiple programs.
 
-On Raspberry Pi OS Lite, you can switch between different terminals with
-Alt+F1,F2,F3,F4 etc.
 
-Alternatively you can use something like =screen= or =tmux= to allow you
-to open new terminals and detach from them - for example using =screen=:
+!!!! FIX THIS EXAMPLE !!!!
+
+Alternatively, you can use something like  =tmux= to allow you
+to open new terminals and detach from them - for example using =tmux=:
 - =screen -S minicom= - open a new terminal called =minicom=
 - Ctrl+A then D - detach from the current terminal
 - =screen -r minicom= - re-attach to an existing terminal called =minicom=
@@ -361,101 +349,10 @@ to open new terminals and detach from them - for example using =screen=:
 For more details on =screen=, see the
 [[https://www.gnu.org/software/screen/manual/screen.html][screen docs]]
 
-** Basic Setup on Other Operating Systems
-:PROPERTIES:
-:CUSTOM_ID: basic-setup-on-other-operating-systems
-:END:
-*** Prerequisites
-:PROPERTIES:
-:CUSTOM_ID: prerequisites
-:END:
-**** Windows
-:PROPERTIES:
-:CUSTOM_ID: windows
-:END:
-If you're on Windows, it is *strongly recommended* to use
-[[https://learn.microsoft.com/en-us/windows/wsl/install][WSL2]] and then
-follow the [[#linux][Linux instructions]] inside that. You should also
-install [[https://github.com/dorssel/usbipd-win][usbipd]] to access USB
-devices inside WSL2 (see the docs there for instructions).
-
-If you're not using WSL2, then you'll need to install the following
-tools:
-- [[https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads][Arm GNU Toolchain]]
-  - Pick Windows -> AArch32 bare-metal target (arm-none-eabi) -> the .exe file
-- [[https://cmake.org/download/][CMake]]
-- [[https://visualstudio.microsoft.com/downloads/][Microsoft Visual Studio]]
-  - When running the installer, select Desktop Development with C++
-
-Then follow the [[#setup-sdk--picotool][manual setup instructions]]. You
-will need to run all commands from the "Developer PowerShell for VS ..."
-terminal, not your usual terminal. For the first cmake configuration in
-each project (eg =cmake ..=), you will need to replace =-GNinja= with
-=-G "NMake Makefiles"=, and anything with =sudo= needs to be run as
-administrator. Also, you should use as short a path as possible due to
-path length limits on Windows.
-
-**** MacOS
-:PROPERTIES:
-:CUSTOM_ID: macos
-:END:
-Install [[https://brew.sh/][Homebrew]] and run these commands:
-
-#+begin_example
-xcode-select --install
-brew install cmake ninja
-brew install --cask gcc-arm-embedded
-#+end_example
-
-Then follow the [[#setup-sdk--picotool][manual setup instructions]].
-
-**** Linux
-:PROPERTIES:
-:CUSTOM_ID: linux
-:END:
-If you have =apt=, then running the [[./pico_setup.sh][pico_setup.sh]]
-script should hopefully work for you, and you won't need to do any
-manual setup.
-
-If it doesn't work, or you don't have =apt=, then you can manually
-install the =GIT_DEPS= (=git= & =git-lfs=) and =SDK_DEPS= (=cmake=,
-=gcc-arm-none-eabi=, =gcc=, =g++= & =ninja-build=) from the script. You
-may also need to install a cross-compiled =newlib= if it isn't included
-in =gcc-arm-none-eabi=, such as =libnewlib-arm-none-eabi= &
-=libstdc++-arm-none-eabi-newlib=. Once those are installed, follow the
-[[#setup-sdk--picotool][manual setup instructions]].
-
-*** Setup SDK & Picotool
+** Setup SDK & Picotool
 :PROPERTIES:
 :CUSTOM_ID: setup-sdk-picotool
 :END:
-**** SDK
-:PROPERTIES:
-:CUSTOM_ID: sdk
-:END:
-Run this from the path you want to store the SDK:
-
-#+begin_src sh
-git clone https://github.com/raspberrypi/pico-sdk.git
-git -C pico-sdk submodule update --init
-#+end_src
-
-Then set =PICO_SDK_PATH= environment variable to that path - on MacOS or
-Linux, just add the following to your =.zshrc= (MacOS) or =.bashrc=
-file:
-
-#+begin_src sh
-export PICO_SDK_PATH=/path/to/pico-sdk
-#+end_src
-
-then reload your terminal window.
-
-On Windows, from an administrator PowerShell run:
-
-#+begin_example
-[System.Environment]::SetEnvironmentVariable('PICO_SDK_PATH','/path/to/pico-sdk', 'Machine')
-#+end_example
-
 **** Picotool
 :PROPERTIES:
 :CUSTOM_ID: picotool
@@ -466,11 +363,11 @@ Run this from the path you want to store picotool:
 git clone https://github.com/raspberrypi/picotool.git
 #+end_src
 
-Then install libusb * On Windows, download and extract libUSB from here
-https://libusb.info/ (hover over Downloads, and click Latest Windows
-Binaries), and set LIBUSB_ROOT environment variable to the extracted
-directory. * On MacOS =brew install libusb= * On Linux
-=sudo apt install libusb-1.0-0-dev=
+Then install libusb
+- On MSYS2, ensure that libusb is installed.
+#+begin_src emacs-lisp
+pacboy -S libusb:u
+#+end_src
 
 Then build and install picotool using these commands:
 
@@ -481,21 +378,16 @@ cmake --build build
 sudo cmake --install .
 #+end_src
 
-To use picotool without sudo on Linux, you'll also need to install the
-picotool udev rules from the picotool/udev folder.
-
-For more details on building & installing picotool, see its
-[[https://github.com/raspberrypi/picotool?tab=readme-ov-file#readme][README]]
+For more details on building & installing picotool, see its [[https://github.com/raspberrypi/picotool?tab=readme-ov-file#readme][README]]
 
 *** Test it's working with pico-examples
 :PROPERTIES:
 :CUSTOM_ID: test-its-working-with-pico-examples
 :END:
-Clone pico-examples:
+Change to pico-examples:
 
 #+begin_src sh
-git clone https://github.com/raspberrypi/pico-examples.git
-cd pico-examples
+cd pico/pico-examples
 #+end_src
 
 Build them all, replacing all occurences of =$board= with the pico board
